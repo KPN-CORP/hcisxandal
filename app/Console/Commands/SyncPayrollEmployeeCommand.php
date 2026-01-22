@@ -14,7 +14,7 @@ class SyncPayrollEmployeeCommand extends Command
     {
         $apis = [
             [
-                'url' => 'http://103.99.25.116/gw_plantation/api/Employee/GetListEmployeeKPN?page=1&limit=100',
+                'url' => 'http://103.99.25.116/gw_plantation/api/Employee/GetListEmployeeKPN?page=1&limit=150',
                 'token' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZUxvZ2luIjoiQVBJIiwic3ViIjoiQVBJIiwianRpIjoiZjQxZjAwOTMtMzUwNi00MzJiLWFjYjMtMDM5NGE2ZjYxYTQ5IiwiaWF0IjoiMS8xNS8yMDI2IDExOjQ4OjU3IEFNICswMDowMCIsImRiTmFtZSI6IlBMQU5UQVRJT05fUEFZUk9MTCIsIlNlcnZlck5hbWUiOiJWTTEyMC0wMDEtTUFZQVBcXFNRTDIwMjIiLCJJZCI6ImVjMTQ3MWM5LWRjZDYtNGMxZi04ZjZkLWEwNGM3ZDhjNGM0ZSIsIm5iZiI6MTc2ODQ3NzczNywiZXhwIjoxODAwMDEzNzM3LCJpc3MiOiJEZW1vSXNzdWVyIiwiYXVkIjoiRGVtb0F1ZGllbmNlIn0.9PRe7D25st86FzLkh1p5VkjfGHPA5sTnR0xZ_IOWcmQ',
             ],
             [
