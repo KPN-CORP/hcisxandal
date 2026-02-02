@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class AndalEmployee extends Model
 {
     use HasFactory;
-    protected $table = 'employees_ANDAL';
+    protected $table = 'employees_andal';
 
     protected $fillable = [
         'employee_id',

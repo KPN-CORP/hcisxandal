@@ -8,7 +8,7 @@ class HcisEmployee extends Model
 {
     use HasFactory;
 
-    protected $table = 'employees_HCIS';
+    protected $table = 'employees_hcis';
 
     protected $guarded = [];
 }

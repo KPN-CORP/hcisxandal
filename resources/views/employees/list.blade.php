@@ -37,7 +37,7 @@
             </h1>
             
             <button type="button" id="btnExport" class="btn btn-success btn-sm fw-bold shadow-sm">
-                <i class="bi bi-file-earmark-excel-fill me-1"></i> Export to Excel
+                <i class="bi bi-file-earmark-excel-fill me-1"></i> Export to Excels
             </button>
         </div>
 
