@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class SyncPayrollEmployeeJob implements ShouldQueue
@@ -37,6 +38,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
     {
         try {
             $dataPullDate = Carbon::today()->toDateString();
+            $dataCount = 0;
 
             while (true) {
                 $url = $this->apiUrl . '?page=' . $this->page . '&limit=' . $this->limit;
@@ -72,7 +74,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
                     Log::info('Payroll sync completed', [
                         'url' => $url,
                         'date' => $dataPullDate,
-                        'total' => count($response->json()),
+                        'total' => $dataCount,
                     ]);
 
                     try {
@@ -80,7 +82,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
                             'is_ok' => true,
                             'ok_url' => $url,
                             'ok_pull_date' => $dataPullDate,
-                            'ok_total' => count($response->json()),
+                            'ok_total' => $dataCount,
                         ]));
                     } catch (\Exception $errMail) {
                         Log::error('HCIS Payroll Log E-mail failed to send: ' . $errMail->getMessage());
@@ -88,7 +90,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
                     return;
                 }
 
-                foreach ($response->json() as $item) {
+                foreach ($data as $item) {
                     AndalEmployee::updateOrCreate(
                         [
                             // UNIQUE KEY
@@ -116,24 +118,9 @@ class SyncPayrollEmployeeJob implements ShouldQueue
                     );
                 }
 
+                $dataCount = $dataCount + count($data);
+
                 $this->page++;
-
-                Log::info('Payroll sync completed', [
-                    'url' => $url,
-                    'date' => $dataPullDate,
-                    'total' => count($response->json()),
-                ]);
-
-                try {
-                    Mail::to('dali.kewara@kpn-corp.com')->send(new HCISPayrollLogMail([
-                        'is_ok' => true,
-                        'ok_url' => $url,
-                        'ok_pull_date' => $dataPullDate,
-                        'ok_total' => count($response->json()),
-                    ]));
-                } catch (\Exception $errMail) {
-                    Log::error('HCIS Payroll Log E-mail failed to send: ' . $errMail->getMessage());
-                }
             }
         } catch (\Exception $e) {
             $url = $this->apiUrl . '?page=' . $this->page . '&limit=' . $this->limit;
