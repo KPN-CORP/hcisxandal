@@ -38,7 +38,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
         try {
             $dataPullDate = Carbon::today()->toDateString();
 
-            do {
+            while (true) {
                 $url = $this->apiUrl . '?page=' . $this->page . '&limit=' . $this->limit;
 
                 $response = Http::withHeaders([
