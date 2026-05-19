@@ -19,13 +19,40 @@
         <tr>
             <td style="border: 1px solid #ddd; padding: 4px; vertical-align: top;">Success</td>
             <td style="border: 1px solid #ddd; padding: 4px; vertical-align: top;">
-              -
+                @if ($isOk)
+                    @if ($okUrl)
+                        <p>Url: {{ $okUrl }}</p>
+                    @endif
+                    @if ($okPullDate)
+                        <p>Pull Date: {{ $okPullDate }}</p>
+                    @endif
+                    @if ($okTotal)
+                        <p>Total: {{ $okTotal }}</p>
+                    @endif
+                @else
+                    -
+                @endif
             </td>
         </tr>
         <tr>
             <td style="border: 1px solid #ddd; padding: 4px; vertical-align: top;">Error</td>
             <td style="border: 1px solid #ddd; padding: 4px; vertical-align: top;">
-              -
+                @if ($isErr)
+                    @if ($errUrl)
+                        <p>Url: {{ $errUrl }}</p>
+                    @endif
+                    @if ($errHttpStatus)
+                        <p>Http Status: {{ $errHttpStatus }}</p>
+                    @endif
+                    @if ($errResponseBody)
+                        <p>Response Body: {{ $errResponseBody }}</p>
+                    @endif
+                    @if ($errException)
+                        <p>Exception: {{ $errException }}</p>
+                    @endif
+                @else
+                    -
+                @endif
             </td>
         </tr>
     </table>

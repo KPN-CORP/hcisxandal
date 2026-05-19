@@ -13,6 +13,8 @@ class HCISPayrollLogMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $isOk;
+    public $isErr;
     public $okUrl;
     public $okPullDate;
     public $okTotal;
@@ -23,6 +25,8 @@ class HCISPayrollLogMail extends Mailable
 
     public function __construct(array $data)
     {
+        $this->isOk = $data['is_ok'];
+        $this->isErr = $data['is_err'];
         $this->okUrl = $data['ok_url'];
         $this->okPullDate = $data['ok_pull_date'];
         $this->okTotal = $data['ok_total'];

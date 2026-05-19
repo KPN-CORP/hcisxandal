@@ -48,6 +48,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
 
                 try {
                     Mail::to('dali.kewara@kpn-corp.com')->send(new HCISPayrollLogMail([
+                        'is_err' => true,
                         'err_url' => $this->apiUrl,
                         'err_http_status' => $response->status(),
                         'err_response_body' => $response->body(),
@@ -93,6 +94,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
 
             try {
                 Mail::to('dali.kewara@kpn-corp.com')->send(new HCISPayrollLogMail([
+                    'is_ok' => true,
                     'ok_url' => $this->apiUrl,
                     'ok_pull_date' => $dataPullDate,
                     'ok_total' => count($response->json()),
@@ -108,6 +110,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
 
             try {
                 Mail::to('dali.kewara@kpn-corp.com')->send(new HCISPayrollLogMail([
+                    'is_err' => true,
                     'err_url' => $this->apiUrl,
                     'err_exception' => $e->getMessage(),
                 ]));
