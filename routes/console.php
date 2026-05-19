@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('payroll:sync-employees')
-    ->monthlyOn(21, '01:00');
+    ->monthlyOn(1, '00:01');

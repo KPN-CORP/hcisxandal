@@ -35,4 +35,19 @@ return [
         ],
     ],
 
+    'gw' => [
+        'cemindo' => [
+            'api_base_url' => env('GW_CEMINDO_API_BASE_URL'),
+            'api_access_token' => env('GW_CEMINDO_API_ACCESS_TOKEN'),
+        ],
+        'downstream' => [
+            'api_base_url' => env('GW_DOWNSTREAM_API_BASE_URL'),
+            'api_access_token' => env('GW_DOWNSTREAM_API_ACCESS_TOKEN'),
+        ],
+        'plantation' => [
+            'api_base_url' => env('GW_PLANTATION_API_BASE_URL'),
+            'api_access_token' => env('GW_PLANTATION_API_ACCESS_TOKEN'),
+        ],
+    ],
+
 ];
