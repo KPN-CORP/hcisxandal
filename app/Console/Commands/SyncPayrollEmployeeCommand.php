@@ -14,15 +14,15 @@ class SyncPayrollEmployeeCommand extends Command
     {
         $apis = [
             [
-                'url' => config('services.gw.cemindo.api_base_url') . '/api/Employee/GetListEmployeeKPN?page=1&limit=1000',
+                'url' => config('services.gw.cemindo.api_base_url') . '/api/Employee/GetListEmployeeKPN',
                 'token' => 'Bearer ' . config('services.gw.cemindo.api_access_token'),
             ],
             [
-                'url' => config('services.gw.downstream.api_base_url') . '/api/Employee/GetListEmployeeKPN?page=1&limit=1000',
+                'url' => config('services.gw.downstream.api_base_url') . '/api/Employee/GetListEmployeeKPN',
                 'token' => 'Bearer ' . config('services.gw.downstream.api_access_token'),
             ],
             [
-                'url' => config('services.gw.plantation.api_base_url') . '/api/Employee/GetListEmployeeKPN?page=1&limit=1000',
+                'url' => config('services.gw.plantation.api_base_url') . '/api/Employee/GetListEmployeeKPN',
                 'token' => 'Bearer ' . config('services.gw.plantation.api_access_token'),
             ],
         ];
