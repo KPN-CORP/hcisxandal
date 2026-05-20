@@ -43,6 +43,10 @@ class SyncPayrollEmployeeJob implements ShouldQueue
             while (true) {
                 $url = $this->apiUrl . '?page=' . $this->page . '&limit=' . $this->limit;
 
+                Log::info('Payroll sync process', [
+                    'url' => $url,
+                ]);
+
                 $response = Http::withHeaders([
                     'Authorization' => $this->token,
                     'Accept' => 'application/json',
