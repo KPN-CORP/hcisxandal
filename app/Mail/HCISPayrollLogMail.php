@@ -25,15 +25,15 @@ class HCISPayrollLogMail extends Mailable
 
     public function __construct(array $data)
     {
-        $this->isOk = $data['is_ok'];
-        $this->isErr = $data['is_err'];
-        $this->okUrl = $data['ok_url'];
-        $this->okPullDate = $data['ok_pull_date'];
-        $this->okTotal = $data['ok_total'];
-        $this->errUrl = $data['err_url'];
-        $this->errHttpStatus = $data['err_http_status'];
-        $this->errResponseBody = $data['err_response_body'];
-        $this->errException = $data['err_exception'];
+        $this->isOk = $data['is_ok'] ?? false;
+        $this->isErr = $data['is_err'] ?? false;
+        $this->okUrl = $data['ok_url'] ?? '';
+        $this->okPullDate = $data['ok_pull_date'] ?? '';
+        $this->okTotal = $data['ok_total'] ?? '';
+        $this->errUrl = $data['err_url'] ?? '';
+        $this->errHttpStatus = $data['err_http_status'] ?? '';
+        $this->errResponseBody = $data['err_response_body'] ?? '';
+        $this->errException = $data['err_exception'] ?? '';
     }
 
     public function build()
