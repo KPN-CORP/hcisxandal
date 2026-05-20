@@ -127,7 +127,11 @@ class EmployeeComparisonController extends Controller
         $chunkSize = 500; 
         $page = $request->input('page', 1);
         
-        $query = HcisEmployee::withTrashed();
+        $query = HcisEmployee::query();
+
+        if (method_exists(HcisEmployee::class, 'bootSoftDeletes')) {
+            $query = HcisEmployee::withTrashed();
+        }
 
         if ($request->filled('business_unit')) $query->where('group_company', $request->business_unit);
         if ($request->filled('job_level')) $query->where('job_level', $request->job_level);
