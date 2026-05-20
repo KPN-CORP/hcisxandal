@@ -16,7 +16,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $timeout = 1200; // 20 menit
+    public int $timeout = 1200;
     public int $tries = 3;
 
     protected string $apiUrl;
@@ -35,7 +35,7 @@ class SyncPayrollEmployeeJob implements ShouldQueue
         $response = Http::withHeaders([
             'Authorization' => $this->token,
             'Accept' => 'application/json',
-        ])->timeout(60)->get($this->apiUrl);
+        ])->timeout(120)->get($this->apiUrl);
 
         if (!$response->successful()) {
             Log::error('Payroll API failed', [
@@ -46,37 +46,58 @@ class SyncPayrollEmployeeJob implements ShouldQueue
             return;
         }
 
-        foreach ($response->json() as $item) {
-            AndalEmployee::updateOrCreate(
+        $apiData = $response->json();
+        $upsertData = [];
+
+        foreach ($apiData as $item) {
+            if (empty(trim($item['nikPayroll']))) {
+                continue;
+            }
+
+            $upsertData[] = [
+                'nik_andal' => trim($item['nikPayroll']),
+                'data_pull' => $dataPullDate,
+                
+                'employee_id' => $item['nikDarwinBox'] ?? null,
+                'fullname' => trim($item['namaKaryawan'] ?? ''),
+                'designation_name' => $item['namaJabatan'] ?? null,
+                'job_level' => $item['golongan'] ?? null,
+                'company_name' => $item['pt'] ?? null,
+                'office_area' => $item['lokasiKerja'] ?? null,
+                'employee_type' => $item['statusKaryawan'] ?? null,
+                'division' => $item['divisi'] ?? null, 
+                'unit' => $item['department'] ?? null,
+                'religion' => $item['agama'] ?? null,   
+                'marital_status' => $item['maritalStatus'] ?? null,
+                'tax_status' => $item['taxStatus'] ?? null,
+                'ktp' => $item['noKTP'] ?? null,
+                'bank_name' => $item['namaBank'] ?? null,
+                'bank_account_number' => $item['nomorRekening'] ?? null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        $chunks = array_chunk($upsertData, 500);
+
+        foreach ($chunks as $chunk) {
+            \App\Models\AndalEmployee::upsert(
+                $chunk,
+                ['nik_andal', 'data_pull'],
                 [
-                    // UNIQUE KEY
-                    'nik_andal' => $item['nikPayroll'],
-                    'data_pull' => $dataPullDate,
-                ],
-                [
-                    'employee_id' => $item['nikDarwinBox'] ?? null,
-                    'nik_andal' => trim($item['nikPayroll']),
-                    'fullname' => trim($item['namaKaryawan']),
-                    'designation_name' => $item['namaJabatan'],
-                    'job_level' => $item['golongan'],
-                    'company_name' => $item['pt'],
-                    'office_area' => $item['lokasiKerja'],
-                    'employee_type' => $item['statusKaryawan'],
-                    'division' => $item['divisi'], 
-                    'unit' => $item['department'],
-                    'religion' => $item['agama'],   
-                    'marital_status' => $item['maritalStatus'],
-                    'tax_status' => $item['taxStatus'],
-                    'ktp' => $item['noKTP'],
-                    'bank_name' => $item['namaBank'],
-                    'bank_account_number' => $item['nomorRekening'],
+                    'employee_id', 'fullname', 'designation_name', 'job_level', 
+                    'company_name', 'office_area', 'employee_type', 'division', 
+                    'unit', 'religion', 'marital_status', 'tax_status', 'ktp', 
+                    'bank_name', 'bank_account_number', 'updated_at'
                 ]
             );
         }
 
         Log::info('Payroll sync completed', [
+            'url' => $this->apiUrl,
             'date' => $dataPullDate,
-            'total' => count($response->json()),
+            'total_from_api' => count($apiData),
+            'total_processed' => count($upsertData),
         ]);
     }
 }
