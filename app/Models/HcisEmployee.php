@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class HcisEmployee extends Model
 {
     use HasFactory;
+    protected $connection = 'kpncorp'; 
+    protected $table = 'employees';
+    protected $guarded = ['id'];
+    // protected $table = 'employees_hcis';
 
-    protected $table = 'employees_hcis';
-
-    protected $guarded = [];
+    // protected $guarded = [];
 }
